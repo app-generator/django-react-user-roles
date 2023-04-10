@@ -123,6 +123,24 @@ At this point, the app runs at `http://127.0.0.1:8000/`.
 
 <br />
 
+## Profile
+
+- We have created a model `UserProfile` and make one to one relationship between `User` and `UserProfile`. That means a user has only one profile.
+- Signals used for:
+  - We are using signals for creating a new profile automatically.
+  - Here we have used `post_save` signals. That means when a new User is created a new Profile will create automatically.
+- In `apps.py` file we have add this line of code. Here we have registered the signals with the app by importing the `signals` inside `ready` method. It is important to include cause we have used `receiver` in `signals.py` file.
+  ```base
+    def ready(self):
+        import apps.home.signals
+  ```
+  
+<br />
+
+<br />
+
+<br />
+
 ## Codebase Structure
 
 The project is coded using a simple and intuitive structure presented below:
