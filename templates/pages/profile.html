@@ -5,6 +5,12 @@
 
 {% block content %}
 
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-info">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+
   <!-- [ Main Content ] start -->
   <div class="row">
     <div class="col-sm-8">
@@ -12,49 +18,22 @@
         <div class="card-header">
           <h5>Edit Info</h5>
         </div>
-        <div class="card-block">
+        <form method="post" class="card-block">
+          {% csrf_token %}
+
           <div class="row">
-            <div class="col-sm-12 mb-4">
+            {% for field in form %}
+            <div class="col-sm-12 mb-2">
               <div class="form-group">
-                <label for="exampleInputEmail1">Email address</label>
-                <input type="email" class="form-control" id="exampleInputEmail1"
-                  aria-describedby="emailHelp" placeholder="Enter email">
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
-                  else.</small>
+                <label for="{{field.id_for_label}}">{{ field.label }}</label>
+                {{field}}
+                <small class="form-text text-danger">{{ field.errors }}</small>
               </div>
             </div>
-            <div class="col-sm-6 mb-4">
-              <div class="form-group">
-                <label for="fn">First Name</label>
-                <input type="email" class="form-control" id="fn" aria-describedby="emailHelp"
-                  placeholder="Enter email">
-              </div>
-            </div>
-            <div class="col-sm-6 mb-4">
-              <div class="form-group">
-                <label for="ln">Last Name</label>
-                <input type="email" class="form-control" id="ln" aria-describedby="emailHelp"
-                  placeholder="Enter email">
-              </div>
-            </div>
-            <div class="col-sm-12 mb-4">
-              <div class="form-group">
-                <label for="add">Address</label>
-                <input type="email" class="form-control" id="add" aria-describedby="emailHelp"
-                  placeholder="Enter email">
-                <small id="addd" class="form-text text-muted">This is your shipments address</small>
-              </div>
-            </div>
-            <div class="col-sm-12 mb-4">
-              <div class="form-group">
-                <label for="abt">About Info</label>
-                <textarea type="email" class="form-control" id="abt" aria-describedby="emailHelp"
-                  placeholder="Bio"></textarea>
-                <small id="abf" class="form-text text-muted">We'll show this on your profile.</small>
-              </div>
-            </div>
+            {% endfor %}
           </div>
-        </div>
+          <button class="btn btn-primary" type="submit">Update</button>
+        </form>
       </div>
     </div>
     <div class="col-sm-4">
