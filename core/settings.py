@@ -58,6 +58,12 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "apps.home",
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.twitter',
 ]
 
 WEBPACK_LOADER = {
@@ -148,6 +154,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+SITE_ID=1
+
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
@@ -177,3 +194,31 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGIN_REDIRECT_URL = "/"
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+
+GITHUB_CLIENT_SECRET=os.environ.get("GITHUB_CLIENT_SECRET")
+GITHUB_CLIENT_ID=os.environ.get("GITHUB_CLIENT_ID")
+GITHUB_AUTH = GITHUB_CLIENT_SECRET is not None and GITHUB_CLIENT_ID is not None
+
+TWITTER_CLIENT_SECRET=os.environ.get("TWITTER_CLIENT_SECRET")
+TWITTER_CLIENT_ID=os.environ.get("TWITTER_CLIENT_ID")
+TWITTER_AUTH = TWITTER_CLIENT_SECRET is not None and TWITTER_CLIENT_ID is not None
+
+
+SOCIALACCOUNT_PROVIDERS = {}
+if GITHUB_AUTH:
+    SOCIALACCOUNT_PROVIDERS['github'] = {
+        'APP': {
+            'client_id': GITHUB_CLIENT_ID,
+            'secret': GITHUB_CLIENT_SECRET,
+            'key': ''
+        }
+    }
+if TWITTER_AUTH:
+    SOCIALACCOUNT_PROVIDERS['twitter'] = {
+        'APP': {
+            'client_id': TWITTER_CLIENT_ID,
+            'secret': TWITTER_CLIENT_SECRET,
+            'key': ''
+        }
+    }
