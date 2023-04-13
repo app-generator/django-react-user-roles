@@ -13,14 +13,28 @@
 
   <!-- [ Main Content ] start -->
   <div class="row">
-    <div class="col-sm-8">
+    <div class=" {% if social_account %} col-sm-8 {% else %} col-sm-12 {% endif %}">
       <div class="card">
         <div class="card-header">
           <h5>Edit Info</h5>
         </div>
         <form method="post" class="card-block">
           {% csrf_token %}
-
+          <div class="row">
+            <div class="col-sm-12 mb-2">
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input 
+                  type="email" 
+                  name="email" 
+                  class="form-control" 
+                  value="{{request.user.email}}" 
+                  placeholder="Email address"
+                  {% if request.user.email %}disabled{% endif %}
+                >
+              </div>
+            </div>
+          </div>
           <div class="row">
             {% for field in form %}
             <div class="col-sm-12 mb-2">
@@ -36,34 +50,25 @@
         </form>
       </div>
     </div>
+    {% if social_account %}
     <div class="col-sm-4">
       <div class="card">
         <div class="card-block">
           <div class="d-flex align-items-center justify-content-center flex-column">
             <div class="w-50 p-3">
-              <img src="https://via.placeholder.com/500" alt="profile image"
+              <img src="{{social_account.extra_data.avatar_url}}" alt="profile image"
                 class="img-fluid rounded-circle">
             </div>
             <div class="text-center">
-              <h4 class="font-weight-bold h6">Author Name</h4>
-              <p class="font-italic text-muted">Lorem ipsum dolor.</p>
+              <h4 class="font-weight-bold h6">{{social_account.extra_data.login}}</h4>
+              <p class="font-italic text-muted">You are authenticated with {{social_account.provider}} </p>
+              <a href="{% url 'logout' %}">Logout</a>
             </div>
-          </div>
-
-          <div class="small font-weight-light mt-4 text-center text-muted">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos
-              esse excepturi fugiat id numquam? Enim illo, perferendis. Eum, ratione,
-              voluptas?</p>
-          </div>
-          <div class="d-flex justify-content-center align-items-center">
-            <a href="#" class="h6 text-muted d-block m-1"><i class="icon feather icon-facebook"></i></a>
-            <a href="#" class="h6 text-muted d-block m-1"><i class="icon feather icon-twitter"></i></a>
-            <a href="#" class="h6 text-muted d-block m-1"><i class="icon feather icon-instagram"></i></a>
-
           </div>
         </div>
       </div>
     </div>
+    {% endif %}
   </div>
   <!-- [ Main Content ] end -->
 
